@@ -1,9 +1,13 @@
 package com.example.mygame;
 
 import android.graphics.Canvas;
+import android.util.Log;
 import android.view.Surface;
 import android.view.SurfaceHolder;
 
+/**
+ * GameObject is an abstract class which is the foundation of all world objects in the game.
+ */
 public class GameLoop extends Thread{
     public static final double MAX_UPS = 30.0;
     private static final double UPS_PERIOD = 1E+3/MAX_UPS;
@@ -28,12 +32,14 @@ public class GameLoop extends Thread{
     }
 
     public void startLoop() {
+        Log.d("GameLoop.java", "startLoop()");
         isRunning = true;
         start();
     }
 
     @Override
     public void run() {
+        Log.d("GameLoop.java", "run()");
         super.run();
 
         // Declare time and cycle count variables
@@ -97,6 +103,17 @@ public class GameLoop extends Thread{
                 frameCount = 0;
                 startTime = System.currentTimeMillis();
             }
+        }
+    }
+
+    public void stopLoop() {
+        Log.d("GameLoop.java", "stopLoop()");
+        isRunning = false;
+        // Wait for thread to join
+        try {
+            join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
         }
     }
 }
